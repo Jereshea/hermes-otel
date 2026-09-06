@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.2.0](https://github.com/briancaffey/hermes-otel/compare/hermes-otel-v1.1.1...hermes-otel-v1.2.0) (2026-09-05)
+
+
+### Features
+
+* **skills:** add pr-review skill for maintainer PR reviews ([3d982cb](https://github.com/briancaffey/hermes-otel/commit/3d982cbe7f66ac8e038f10f48bb6efa40d86802d))
+
+## [1.1.1](https://github.com/briancaffey/hermes-otel/compare/hermes-otel-v1.1.0...hermes-otel-v1.1.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* **dashboard:** read $HERMES_HOME/hermes_otel.yaml and hide MCP pings behind a checkbox ([4ccda96](https://github.com/briancaffey/hermes-otel/commit/4ccda96ff1364bd6210fa1637aec0a8876c5b8f3))
+* **dashboard:** read $HERMES_HOME/hermes_otel.yaml and hide MCP pings behind a checkbox ([1f0a2dc](https://github.com/briancaffey/hermes-otel/commit/1f0a2dce53b97aea25b93ffa633f794b95bb6912))
+* **tracer:** drop successful MCP keepalive ping spans ([530df6e](https://github.com/briancaffey/hermes-otel/commit/530df6e3da27e4c1d0c5961e41d728159b8144b6))
+* **tracer:** drop successful MCP keepalive ping spans ([73de88e](https://github.com/briancaffey/hermes-otel/commit/73de88e2b7cfd4d734c1f2efdc1c9862374d8f59)), closes [#62](https://github.com/briancaffey/hermes-otel/issues/62)
+
+## [1.1.0](https://github.com/briancaffey/hermes-otel/compare/hermes-otel-v1.0.1...hermes-otel-v1.1.0) (2026-08-31)
+
+
+### Features
+
+* **backends:** add Parseable backend ([c680169](https://github.com/briancaffey/hermes-otel/commit/c680169457b67895a4f29bf50e6f244e4a9205c3))
+
+## [1.0.1](https://github.com/briancaffey/hermes-otel/compare/hermes-otel-v1.0.0...hermes-otel-v1.0.1) (2026-08-31)
+
+
+### Bug Fixes
+
+* **hooks:** capture full prompt/response payloads on api.* spans ([0f5858f](https://github.com/briancaffey/hermes-otel/commit/0f5858fb590c5147e7ce421a153cbbd310d153d3))
+* **hooks:** capture full prompt/response payloads on api.* spans ([c6b4e01](https://github.com/briancaffey/hermes-otel/commit/c6b4e0144222fd797368a4de0700286ea639af21))
+
 ## [1.0.0](https://github.com/briancaffey/hermes-otel/compare/hermes-otel-v0.11.0...hermes-otel-v1.0.0) (2026-08-22)
 
 

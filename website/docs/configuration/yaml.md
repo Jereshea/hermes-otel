@@ -82,7 +82,7 @@ See [Conversation capture](/configuration/conversation-capture) for a worked exa
 
 ```yaml
 # Attach an OTel LoggingHandler to Python's logging so stdlib logger.info(...)
-# calls ship to any log-capable backend (SigNoz, LGTM, Uptrace, OpenObserve,
+# calls ship to any log-capable backend (SigNoz, LGTM, Uptrace, OpenObserve, Parseable,
 # or any OTLP collector). Every
 # record gets the active span's trace_id/span_id stamped on it automatically.
 # Off by default because attaching to root is invasive.
@@ -125,6 +125,18 @@ skill_spans: true
 ```
 
 See [Span hierarchy → skill.*](/architecture/span-hierarchy#skill) for the span shape and attributes.
+
+## MCP keepalive pings
+
+```yaml
+# MCP Python SDK 2.x (Hermes v0.21.0+) emits an OTel span for every MCP
+# request, including the `ping` Hermes sends on each idle keepalive interval
+# per connection. Each one lands as a standalone one-span "MCP send ping"
+# trace. True drops the successful pings before any exporter or the live
+# store sees them; failed pings (error status) are always kept.
+# Env: HERMES_OTEL_SUPPRESS_MCP_PING_SPANS. Default: true.
+suppress_mcp_ping_spans: true
+```
 
 ## Lifecycle / cleanup
 

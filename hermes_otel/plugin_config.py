@@ -88,14 +88,14 @@ class BackendConfig:
     discouraged because the file is plaintext.
     """
 
-    type: str  # phoenix | langfuse | signoz | jaeger | tempo | otlp | honeycomb | weave
+    type: str  # phoenix | langfuse | signoz | jaeger | tempo | otlp | parseable | honeycomb | weave
     name: Optional[str] = None  # display name (defaults to type)
     endpoint: Optional[str] = None  # OTLP HTTP traces URL
     headers: Optional[Dict[str, str]] = None  # extra/override HTTP headers
     traces: Optional[bool] = None  # None = on. False = dashboard/query-only, no trace export.
     metrics: Optional[bool] = None  # None = auto (off for langfuse/jaeger/tempo)
     logs: Optional[bool] = (
-        None  # None = auto (on for signoz/otlp/lgtm/uptrace/openobserve/honeycomb)
+        None  # None = auto (on for signoz/otlp/lgtm/uptrace/openobserve/parseable/honeycomb)
     )
     # Langfuse credentials
     public_key: Optional[str] = None
@@ -115,6 +115,10 @@ class BackendConfig:
     password: Optional[str] = None
     password_env: Optional[str] = None
     stream_name: Optional[str] = None
+    # Parseable dataset routing (one dataset per OTLP signal)
+    traces_dataset: Optional[str] = None
+    metrics_dataset: Optional[str] = None
+    logs_dataset: Optional[str] = None
     # Honeycomb: API key (sent as the ``x-honeycomb-team`` header), optional
     # dataset (``x-honeycomb-dataset``), and ``region`` (``us``|``eu``) used to
     # default the endpoint when one isn't given explicitly.
@@ -215,6 +219,13 @@ class HermesOtelConfig:
     host_metrics: bool = False
     host_metrics_gpu: str = "auto"  # auto | amd | nvidia | off
     host_metrics_interval_ms: int = 1000
+    # ── MCP keepalive noise ─────────────────────────────────────────────
+    # MCP Python SDK 2.x (Hermes v0.21.0+) emits a CLIENT span for every
+    # JSON-RPC request, including the periodic keepalive ``ping`` Hermes sends
+    # per MCP connection. Each surfaces as a standalone one-span
+    # "MCP send ping" trace. True (default) drops the successful ones before
+    # they reach any exporter or the live store; failed pings are always kept.
+    suppress_mcp_ping_spans: bool = True
     # ── Multi-backend fan-out ───────────────────────────────────────────
     backends: Optional[Tuple[BackendConfig, ...]] = None
 
@@ -360,6 +371,7 @@ def _coerce_from_yaml(key: str, value: Any) -> Any:
         "skill_spans",
         "dashboard_live",
         "host_metrics",
+        "suppress_mcp_ping_spans",
     ):
         if isinstance(value, bool):
             return value
@@ -460,6 +472,7 @@ def _load_env_overrides() -> Dict[str, Any]:
     take("host_metrics", _parse_bool)
     take("host_metrics_gpu", _parse_gpu_vendor)
     take("host_metrics_interval_ms", _parse_int)
+    take("suppress_mcp_ping_spans", _parse_bool)
 
     proj = os.getenv(_ENV_PREFIX + "PROJECT_NAME", "").strip()
     if proj:
